@@ -13,6 +13,7 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
+    container: docker://ghcr.io/iterative/cml:0-dvc2-base1
     steps:
     - uses: actions/checkout@v4
     - name: Setup .NET
@@ -25,3 +26,9 @@ jobs:
       run: dotnet build --no-restore
     - name: Test
       run: dotnet test --no-build --verbosity normal
+    - name: autograde_task
+      env:
+        repo_token: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          .NET BirdWatcherTests.cs >> report.md
+          cml-send-comment report.md

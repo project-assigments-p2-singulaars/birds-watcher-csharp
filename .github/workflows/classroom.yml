@@ -26,9 +26,9 @@ jobs:
       run: dotnet build --no-restore
     - name: Test
       run: dotnet test --no-build --verbosity normal
-      - name: autograde_task
-        env:
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
+    - name: autograde_task
+      env:
+        repo_token: ${{ secrets.GITHUB_TOKEN }}
         run: |
           .NET BirdWatcherTests.cs >> report.md
           cml-send-comment report.md
